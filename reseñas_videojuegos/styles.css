@@ -1,0 +1,182 @@
+/* General styles */
+body {
+    font-family: "Questrial", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #fff;
+    text-align: center;
+    overflow-x: hidden;
+}
+ 
+header {
+    background: linear-gradient(90deg, #ff1b6b, #45caff);
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+ 
+header h1 {
+    font-size: 2.5em;
+    color: #fff;
+    text-shadow: 0px 0px 10px #45caff, 0px 0px 20px #ff1b6b;
+    animation: rgbAnimation 5s infinite alternate;
+}
+ 
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+ 
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+ 
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2em;
+    text-shadow: 0px 0px 5px #ff1b6b, 0px 0px 10px #45caff;
+}
+ 
+nav ul li a:hover {
+    color: #ff1b6b;
+}
+ 
+button {
+    padding: 10px 30px;
+    font-size: 1em;
+    border: none;
+    color: white;
+    background: linear-gradient(90deg, #ff1b6b, #45caff);
+    cursor: pointer;
+    box-shadow: 0px 0px 15px #ff1b6b, 0px 0px 25px #45caff;
+    transition: 0.5s;
+}
+ 
+button:hover {
+    background: linear-gradient(90deg, #45caff, #ff1b6b);
+    transform: scale(1.05);
+}
+ 
+/* Animación RGB para los títulos */
+@keyframes rgbAnimation {
+    0% {
+        text-shadow: 0 0 10px #ff1b6b, 0 0 20px #ff1b6b, 0 0 30px #45caff, 0 0 40px #45caff;
+    }
+    100% {
+        text-shadow: 0 0 10px #45caff, 0 0 20px #45caff, 0 0 30px #ff1b6b, 0 0 40px #ff1b6b;
+    }
+}
+ 
+/* Section specific styles */
+.inicio {
+    background: radial-gradient(circle at center, #212121, #111);
+}
+ 
+.reviews {
+    background: linear-gradient(135deg, #111, #1b1b1b);
+}
+ 
+.login {
+    background: linear-gradient(90deg, #0f0f0f, #252525);
+}
+ 
+.register {
+    background: linear-gradient(120deg, #1b1b1b, #333);
+}
+ 
+.search {
+    background: linear-gradient(180deg, #121212, #2e2e2e);
+}
+ 
+section {
+    padding: 50px 0;
+}
+ 
+section h2 {
+    font-size: 2.5em;
+    color: #fff;
+    text-shadow: 0px 0px 10px #ff1b6b, 0px 0px 20px #45caff;
+    animation: rgbAnimation 5s infinite alternate;
+}
+ 
+section p, form, .reviews-container {
+    font-size: 1.2em;
+    color: #fff;
+    text-shadow: 0px 0px 5px #ff1b6b, 0px 0px 10px #45caff;
+}
+ 
+footer {
+    background: #1b1b1b;
+    padding: 20px;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0px 0px 10px #ff1b6b, 0px 0px 20px #45caff;
+}
+ 
+/* Hover and click effects */
+nav ul li a:hover,
+footer nav ul li a:hover {
+    color: #ff1b6b;
+    transition: 0.3s;
+}
+ 
+.review:hover {
+    box-shadow: 0px 0px 10px #ff1b6b, 0px 0px 20px #45caff;
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
+/* Contenedor principal para la reseña */
+.review-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+    background: linear-gradient(135deg, #111, #1b1b1b);
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+ 
+/* Estilos para el texto de la reseña */
+.review-text {
+    width: 65%;
+    text-align: justify;
+    line-height: 1.8;
+    padding-right: 20px;
+    color: #fff;
+    text-shadow: 0px 0px 5px #ff1b6b, 0px 0px 10px #45caff;
+}
+ 
+/* Título de la reseña */
+.review-text h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-align: left;
+    color: #ff00ff;
+    text-shadow: 0 0 8px rgba(255, 0, 255, 0.8);
+    animation: rgbAnimation 5s infinite alternate;
+}
+ 
+/* Imagen de la reseña */
+.review-image {
+    width: 30%;
+}
+ 
+.review-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+}
+ 
+/* Footer */
+footer {
+    background: #1b1b1b;
+    padding: 20px;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0px 0px 10px #ff1b6b, 0px 0px 20px #45caff;
+}
+ 

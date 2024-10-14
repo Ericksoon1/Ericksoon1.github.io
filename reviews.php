@@ -1,12 +1,3 @@
-<?php
-// Conectar a la base de datos
-include 'conexion.php';
- 
-// Consultar todas las reseñas de la base de datos
-$query = "SELECT title, review_text, imagen FROM reviews";
-$result = mysqli_query($conexion, $query);
-?>
- 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,6 +21,15 @@ $result = mysqli_query($conexion, $query);
     </header>
  
     <section id="reviews-section">
+<?php
+// Conectar a la base de datos
+include 'conexion.php';
+ 
+// Consultar todas las reseñas de la base de datos
+$query = "SELECT title, review_text, imagen FROM reviews";
+$result = mysqli_query($conexion, $query);
+?>
+
         <?php
         // Verificar si hay reseñas disponibles
         if (mysqli_num_rows($result) > 0) {

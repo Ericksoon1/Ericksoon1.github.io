@@ -1,17 +1,3 @@
-<?php
-$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
-    $conn->query($query);
-    header('Location: login.php');
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -43,3 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
 </body>
 </html>
+
+<?php
+$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
+    $conn->query($query);
+    header('Location: login.php');
+}
+?>

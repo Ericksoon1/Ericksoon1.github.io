@@ -1,24 +1,3 @@
-<?php
-session_start();
-$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    $query = "SELECT * FROM users WHERE username='$username'";
-    $result = $conn->query($query);
-    $user = $result->fetch_assoc();
-
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        header('Location: index.php');
-    } else {
-        echo "Usuario o contraseña incorrectos.";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -48,3 +27,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
 </body>
 </html>
+<?php
+session_start();
+$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = "SELECT * FROM users WHERE username='$username'";
+    $result = $conn->query($query);
+    $user = $result->fetch_assoc();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        header('Location: index.php');
+    } else {
+        echo "Usuario o contraseña incorrectos.";
+    }
+}
+?>

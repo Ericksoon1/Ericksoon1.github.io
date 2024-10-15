@@ -1,29 +1,3 @@
-<?php
-session_start();
-$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
- 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
- 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
-    $review_text = $_POST['review_text'];
-    $image = $_FILES['image']['name'];
-    $target_dir = "images/";
-    $target_file = $target_dir . basename($image);
- 
-    move_uploaded_file($_FILES['imagen']['tmp_name'], $target_file);
- 
-    $user_id = $_SESSION['user_id'];
-    $query = "INSERT INTO reviews (title, review_text, imagen, user_id) VALUES ('$title', '$review_text', '$image', '$user_id')";
-    $conn->query($query);
- 
-    header('Location: reviews.php');
-}
-?>
- 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -55,4 +29,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
 </body>
 </html>
+<?php
+session_start();
+$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
  
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+ 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'];
+    $review_text = $_POST['review_text'];
+    $image = $_FILES['image']['name'];
+    $target_dir = "images/";
+    $target_file = $target_dir . basename($image);
+ 
+    move_uploaded_file($_FILES['imagen']['tmp_name'], $target_file);
+ 
+    $user_id = $_SESSION['user_id'];
+    $query = "INSERT INTO reviews (title, review_text, imagen, user_id) VALUES ('$title', '$review_text', '$image', '$user_id')";
+    $conn->query($query);
+ 
+    header('Location: reviews.php');
+}
+?> 

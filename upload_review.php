@@ -29,28 +29,36 @@
     </section>
 </body>
 </html>
+
 <?php
 session_start();
-$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
- 
+include 'conexion.php'; // Incluir la conexión actualizada a Azure
+
+// Verificar si el usuario está autenticado
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
- 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $review_text = $_POST['review_text'];
-    $image = $_FILES['image']['name'];
+    $image = $_FILES['imagen']['name'];
     $target_dir = "images/";
     $target_file = $target_dir . basename($image);
- 
-    move_uploaded_file($_FILES['imagen']['tmp_name'], $target_file);
- 
+
+    // Mover la imagen subida al directorio de destino
+    move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
+
     $user_id = $_SESSION['user_id'];
+    
+    // Consulta para insertar la reseña en la base de datos
     $query = "INSERT INTO reviews (title, review_text, imagen, user_id) VALUES ('$title', '$review_text', '$image', '$user_id')";
-    $conn->query($query);
- 
-    header('Location: reviews.php');
+    
+    if ($conexion->query($query) === TRUE) {
+        header('Location: reviews.php'); // Redirigir al listado de reseñas después de subir la reseña
+    } else {
+        echo "Error al subir la reseña: " . $conexion->error;
+    }
 }
-?> 
+?>

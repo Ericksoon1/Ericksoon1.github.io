@@ -27,23 +27,47 @@
     </section>
 </body>
 </html>
+
 <?php
 session_start();
-$conn = new mysqli('localhost', 'root', '', 'videojuegos_db');
+
+// Información de conexión a la base de datos en Azure
+$serverName = "tcp:servidoriranomas.database.windows.net,1433";
+$username = "adminsql";
+$password = "junioRyzen3200$";
+$database = "videojuegos_db";
+
+// Crear la conexión
+$conn = new mysqli($serverName, $username, $password, $database);
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Error en la conexión: " . $conn->connect_error);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM users WHERE username='$username'";
-    $result = $conn->query($query);
+    // Preparar la consulta para evitar SQL Injection
+    $query = "SELECT * FROM users WHERE username=?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
+    // Verificar la contraseña
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
-        header('Location: index.php');
+        header('Location: index.php'); // Redirigir al inicio si el login es correcto
     } else {
         echo "Usuario o contraseña incorrectos.";
     }
+    
+    $stmt->close();
 }
+
+// Cerrar la conexión
+$conn->close();
 ?>

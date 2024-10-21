@@ -22,15 +22,15 @@
  
     <section id="reviews-section">
 <?php
-// Conectar a la base de datos
-include 'conexion.php';  // Asegúrate de que 'conexion.php' tiene la configuración correcta
 
-// Consultar todas las reseñas de la base de datos
+include 'conexion.php';  
+
+
 $query = "SELECT title, review_text, imagen FROM reviews";
 $result = mysqli_query($conexion, $query);
 
 if ($result) {
-    // Verificar si hay reseñas disponibles
+    
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             $titulo = $row['title'];
@@ -38,20 +38,20 @@ if ($result) {
             $imagen = $row['imagen'];
 
             echo "<div class='review-container'>";
-            // Sección del texto
+            
             echo "<div class='review-text'>";
             echo "<h1>" . htmlspecialchars($titulo) . "</h1>";
             echo "<p>" . nl2br(htmlspecialchars($contenido)) . "</p>";
             echo "</div>";
 
-            // Sección de la imagen
+            
             if ($imagen) {
                 echo "<div class='review-image'>";
                 echo "<img src='" . htmlspecialchars($imagen) . "' alt='" . htmlspecialchars($titulo) . "' style='width:300px; height:auto;'>";
                 echo "</div>";
             }
 
-            echo "</div>"; // Cierra review-container
+            echo "</div>"; 
         }
     } else {
         echo "<p>No hay reseñas disponibles.</p>";

@@ -32,9 +32,9 @@
 
 <?php
 session_start();
-include 'conexion.php'; // Incluir la conexión actualizada a Azure
+include 'conexion.php'; 
 
-// Verificar si el usuario está autenticado
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -47,16 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $target_dir = "images/";
     $target_file = $target_dir . basename($image);
 
-    // Mover la imagen subida al directorio de destino
+    
     move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
 
     $user_id = $_SESSION['user_id'];
     
-    // Consulta para insertar la reseña en la base de datos
+    
     $query = "INSERT INTO reviews (title, review_text, imagen, user_id) VALUES ('$title', '$review_text', '$image', '$user_id')";
     
     if ($conexion->query($query) === TRUE) {
-        header('Location: reviews.php'); // Redirigir al listado de reseñas después de subir la reseña
+        header('Location: reviews.php'); 
     } else {
         echo "Error al subir la reseña: " . $conexion->error;
     }

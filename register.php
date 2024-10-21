@@ -31,16 +31,16 @@
 </html>
 
 <?php
-// Información de conexión a la base de datos en Azure
+
 $serverName = "tcp:servidoriranomas.database.windows.net,1433";
 $username = "adminsql";
 $password = "junioRyzen3200$";
 $database = "videojuegos_db";
 
-// Crear la conexión
+
 $conn = new mysqli($serverName, $username, $password, $database);
 
-// Verificar la conexión
+
 if ($conn->connect_error) {
     die("Error en la conexión: " . $conn->connect_error);
 }
@@ -48,18 +48,18 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Encriptar la contraseña
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
 
-    // Preparar y ejecutar la consulta
+    
     $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
     
     if ($conn->query($query) === TRUE) {
-        header('Location: login.php'); // Redirigir a la página de inicio de sesión
+        header('Location: login.php'); 
     } else {
         echo "Error: " . $conn->error;
     }
 }
 
-// Cerrar la conexión
+
 $conn->close();
 ?>

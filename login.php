@@ -31,43 +31,51 @@
 <?php
 session_start();
 
-
+// Conexión a SQL Server
 $serverName = "servidoriranomas.database.windows.net";
-$username = "adminsql";
-$password = "junioRyzen3200$";
-$database = "videojuegos_db";
+$connectionOptions = array(
+    "Database" => "videojuegos_db",
+    "Uid" => "adminsql",
+    "PWD" => "junioRyzen3200$"
+);
 
+// Establecer la conexión
+$conn = sqlsrv_connect($serverName, $connectionOptions);
 
-$conn = new mysqli($serverName, $username, $password, $database);
-
-
-if ($conn->connect_error) {
-    die("Error en la conexión: " . $conn->connect_error);
+// Verificar si la conexión fue exitosa
+if ($conn === false) {
+    die(print_r(sqlsrv_errors(), true));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    
-    $query = "SELECT * FROM dbo.users WHERE username=?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    // Consulta SQL utilizando un parámetro preparado para evitar inyecciones SQL
+    $query = "SELECT * FROM dbo.users WHERE username = ?";
+    $params = array($username);
+    $stmt = sqlsrv_query($conn, $query, $params);
 
-    
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
+    }
+
+    // Obtener los resultados de la consulta
+    $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+    // Verificar si el usuario existe y la contraseña es correcta
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        header('Location: index.php'); 
+        $_SESSION['user_id'] = $user['id']; 
+        header('Location: index.php');
+        exit;
     } else {
         echo "Usuario o contraseña incorrectos.";
     }
-    
-    $stmt->close();
+
+    // Liberar el recurso de la consulta
+    sqlsrv_free_stmt($stmt);
 }
 
-
-$conn->close();
+// Cerrar la conexión
+sqlsrv_close($conn);
 ?>

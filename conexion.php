@@ -1,14 +1,16 @@
 <?php
-$host = 'servidoriranomas.database.windows.net';  
-$usuario = 'adminsql';  
-$contraseña = 'junioRyzen3200$';  
-$base_de_datos = 'videojuegos_db';  
+$serverName = 'servidoriranomas.database.windows.net';  
+$connectionOptions = array(
+    'Database' => 'videojuegos_db',  
+    'Uid' => 'adminsql',  
+    'PWD' => 'junioRyzen3200$'  
+);
 
+// Establecer la conexión con SQL Server
+$conexion = sqlsrv_connect($serverName, $connectionOptions);
 
-$conexion = new mysqli($host, $usuario, $contraseña, $base_de_datos);
-
-
-if ($conexion->connect_error) {
-    die('Error de conexión: ' . $conexion->connect_error);
+// Verificar si la conexión fue exitosa
+if ($conexion === false) {
+    die(print_r(sqlsrv_errors(), true));
 }
 ?>

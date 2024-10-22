@@ -32,7 +32,7 @@
 session_start();
 
 
-$serverName = "servidoriranomas.database.windows.net";
+$serverName = "iranomas-b7grghffdfbxd0ap.canadacentral-01.azurewebsites.net";
 $username = "adminsql";
 $password = "junioRyzen3200$";
 $database = "videojuegos_db";

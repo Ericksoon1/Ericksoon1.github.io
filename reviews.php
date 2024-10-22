@@ -26,7 +26,7 @@
 include 'conexion.php';  
 
 
-$query = "SELECT title, review_text, imagen FROM reviews";
+$query = "SELECT title, review_text, imagen FROM dbo.reviews";
 $result = mysqli_query($conexion, $query);
 
 if ($result) {

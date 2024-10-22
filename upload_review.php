@@ -34,7 +34,7 @@
 session_start();
 include 'conexion.php'; 
 
-
+// Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -43,22 +43,33 @@ if (!isset($_SESSION['user_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $review_text = $_POST['review_text'];
-    $image = $_FILES['imagen']['name'];
+    $image = $_FILES['image']['name'];
     $target_dir = "images/";
     $target_file = $target_dir . basename($image);
 
-    
-    move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
+    // Mover la imagen subida al directorio 'images/'
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+        $user_id = $_SESSION['user_id'];
+        
+        // Preparar la consulta SQL para insertar la reseña
+        $query = "INSERT INTO dbo.reviews (title, review_text, imagen, user_id) VALUES (?, ?, ?, ?)";
+        $params = array($title, $review_text, $image, $user_id);
 
-    $user_id = $_SESSION['user_id'];
-    
-    
-    $query = "INSERT INTO reviews (title, review_text, imagen, user_id) VALUES ('$title', '$review_text', '$image', '$user_id')";
-    
-    if ($conexion->query($query) === TRUE) {
-        header('Location: reviews.php'); 
+        // Ejecutar la consulta con SQL Server
+        $stmt = sqlsrv_query($conexion, $query, $params);
+
+        if ($stmt === false) {
+            // Mostrar errores si ocurre algún problema al insertar
+            die(print_r(sqlsrv_errors(), true));
+        } else {
+            header('Location: reviews.php');
+            exit;
+        }
+
+        // Liberar el recurso de la consulta
+        sqlsrv_free_stmt($stmt);
     } else {
-        echo "Error al subir la reseña: " . $conexion->error;
+        echo "Error al subir la imagen.";
     }
 }
 ?>

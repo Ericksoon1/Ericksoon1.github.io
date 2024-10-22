@@ -31,35 +31,44 @@
 </html>
 
 <?php
-
+// Configuración del servidor de SQL Server
 $serverName = "servidoriranomas.database.windows.net";
-$username = "adminsql";
-$password = "junioRyzen3200$";
-$database = "videojuegos_db";
+$connectionOptions = [
+    "Database" => "videojuegos_db",
+    "Uid" => "adminsql",
+    "PWD" => "junioRyzen3200$"
+];
 
+// Conectar a SQL Server usando sqlsrv
+$conn = sqlsrv_connect($serverName, $connectionOptions);
 
-$conn = new mysqli($serverName, $username, $password, $database);
-
-
-if ($conn->connect_error) {
-    die("Error en la conexión: " . $conn->connect_error);
+// Verificar conexión
+if ($conn === false) {
+    die(print_r(sqlsrv_errors(), true));
 }
 
+// Si se recibe un POST, procesar el registro
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    
-    $query = "INSERT INTO dbo.users (username, email, password) VALUES ('$username', '$email', '$password')";
-    
-    if ($conn->query($query) === TRUE) {
-        header('Location: login.php'); 
+    // Preparar la consulta para insertar en la tabla dbo.users
+    $query = "INSERT INTO dbo.users (username, email, password) VALUES (?, ?, ?)";
+    $params = [$username, $email, $password];
+
+    // Ejecutar la consulta
+    $stmt = sqlsrv_query($conn, $query, $params);
+
+    if ($stmt) {
+        // Redirigir al login después de un registro exitoso
+        header('Location: login.php');
+        exit();
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error en la inserción: " . print_r(sqlsrv_errors(), true);
     }
 }
 
-
-$conn->close();
+// Cerrar la conexión
+sqlsrv_close($conn);
 ?>

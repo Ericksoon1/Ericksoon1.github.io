@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     
-    $query = "SELECT * FROM users WHERE username=?";
+    $query = "SELECT * FROM dbo.users WHERE username=?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();

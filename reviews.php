@@ -25,40 +25,44 @@
 
 include 'conexion.php';  
 
-
+// Preparar la consulta
 $query = "SELECT title, review_text, imagen FROM dbo.reviews";
-$result = mysqli_query($conexion, $query);
+$stmt = sqlsrv_query($conexion, $query);
 
-if ($result) {
-    
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $titulo = $row['title'];
-            $contenido = $row['review_text'];
-            $imagen = $row['imagen'];
+if ($stmt === false) {
+    // Si hay un error, mostrar el mensaje correspondiente
+    die(print_r(sqlsrv_errors(), true));
+}
 
-            echo "<div class='review-container'>";
-            
-            echo "<div class='review-text'>";
-            echo "<h1>" . htmlspecialchars($titulo) . "</h1>";
-            echo "<p>" . nl2br(htmlspecialchars($contenido)) . "</p>";
+// Recorrer los resultados de la consulta
+if (sqlsrv_has_rows($stmt)) {
+    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        $titulo = $row['title'];
+        $contenido = $row['review_text'];
+        $imagen = $row['imagen'];
+
+        echo "<div class='review-container'>";
+        
+        echo "<div class='review-text'>";
+        echo "<h1>" . htmlspecialchars($titulo) . "</h1>";
+        echo "<p>" . nl2br(htmlspecialchars($contenido)) . "</p>";
+        echo "</div>";
+
+        // Mostrar la imagen si existe
+        if ($imagen) {
+            echo "<div class='review-image'>";
+            echo "<img src='" . htmlspecialchars($imagen) . "' alt='" . htmlspecialchars($titulo) . "' style='width:300px; height:auto;'>";
             echo "</div>";
-
-            
-            if ($imagen) {
-                echo "<div class='review-image'>";
-                echo "<img src='" . htmlspecialchars($imagen) . "' alt='" . htmlspecialchars($titulo) . "' style='width:300px; height:auto;'>";
-                echo "</div>";
-            }
-
-            echo "</div>"; 
         }
-    } else {
-        echo "<p>No hay reseñas disponibles.</p>";
+
+        echo "</div>"; 
     }
 } else {
-    echo "<p>Error al consultar las reseñas: " . mysqli_error($conexion) . "</p>";
+    echo "<p>No hay reseñas disponibles.</p>";
 }
+
+// Cerrar el recurso de la consulta
+sqlsrv_free_stmt($stmt);
 ?>
     </section>
  
@@ -67,4 +71,3 @@ if ($result) {
     </footer>
 </body>
 </html>
- 

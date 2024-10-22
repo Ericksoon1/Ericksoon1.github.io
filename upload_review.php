@@ -47,29 +47,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $target_dir = "images/";
     $target_file = $target_dir . basename($image);
 
-    // Mover la imagen subida al directorio 'images/'
+    // Verificar si la imagen se cargó correctamente
     if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-        $user_id = $_SESSION['user_id'];
-        
-        // Preparar la consulta SQL para insertar la reseña
-        $query = "INSERT INTO dbo.reviews (title, review_text, imagen, user_id) VALUES (?, ?, ?, ?)";
-        $params = array($title, $review_text, $image, $user_id);
-
-        // Ejecutar la consulta con SQL Server
-        $stmt = sqlsrv_query($conexion, $query, $params);
-
-        if ($stmt === false) {
-            // Mostrar errores si ocurre algún problema al insertar
-            die(print_r(sqlsrv_errors(), true));
-        } else {
-            header('Location: reviews.php');
-            exit;
-        }
-
-        // Liberar el recurso de la consulta
-        sqlsrv_free_stmt($stmt);
+        echo "La imagen se cargó correctamente en " . $target_file . "<br>";
     } else {
         echo "Error al subir la imagen.";
+    }
+
+    $user_id = $_SESSION['user_id'];
+    
+    // Insertar los datos en la base de datos
+    $query = "INSERT INTO dbo.reviews (title, review_text, imagen, user_id) VALUES (?, ?, ?, ?)";
+    $params = array($title, $review_text, $image, $user_id);
+
+    $stmt = sqlsrv_query($conexion, $query, $params);
+
+    if ($stmt) {
+        echo "Reseña subida correctamente.";
+        header('Location: reviews.php'); 
+    } else {
+        echo "Error al subir la reseña: ";
+        print_r(sqlsrv_errors());  // Muestra los errores de SQL Server
     }
 }
 ?>

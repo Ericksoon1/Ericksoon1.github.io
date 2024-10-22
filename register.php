@@ -32,7 +32,7 @@
 
 <?php
 
-$serverName = "tcp:servidoriranomas.database.windows.net,1433";
+$serverName = "servidoriranomas.database.windows.net";
 $username = "adminsql";
 $password = "junioRyzen3200$";
 $database = "videojuegos_db";

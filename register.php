@@ -32,7 +32,7 @@
 
 <?php
 
-$serverName = "iranomas-b7grghffdfbxd0ap.canadacentral-01.azurewebsites.net";
+$serverName = "servidoriranomas.database.windows.net";
 $username = "adminsql";
 $password = "junioRyzen3200$";
 $database = "videojuegos_db";

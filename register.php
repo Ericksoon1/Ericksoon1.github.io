@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
 
     
-    $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
+    $query = "INSERT INTO dbo.users (username, email, password) VALUES ('$username', '$email', '$password')";
     
     if ($conn->query($query) === TRUE) {
         header('Location: login.php'); 

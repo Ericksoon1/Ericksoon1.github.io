@@ -19,22 +19,21 @@
             </ul>
         </nav>
     </header>
- 
+
     <section id="reviews-section">
 <?php
+include 'conexion.php';  // Asegúrate de que la conexión sea correcta y esté bien configurada
 
-include 'conexion.php';  
-
-// Preparar la consulta
+// Preparar la consulta para obtener las reseñas
 $query = "SELECT title, review_text, imagen FROM dbo.reviews";
 $stmt = sqlsrv_query($conexion, $query);
 
+// Verificar si hay algún error en la consulta
 if ($stmt === false) {
-    // Si hay un error, mostrar el mensaje correspondiente
-    die(print_r(sqlsrv_errors(), true));
+    die(print_r(sqlsrv_errors(), true)); // Muestra el error si falla la consulta
 }
 
-// Recorrer los resultados de la consulta
+// Verificar si hay resultados
 if (sqlsrv_has_rows($stmt)) {
     while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         $titulo = $row['title'];
@@ -42,16 +41,17 @@ if (sqlsrv_has_rows($stmt)) {
         $imagen = $row['imagen'];
 
         echo "<div class='review-container'>";
-        
+
+        // Mostrar el texto de la reseña
         echo "<div class='review-text'>";
         echo "<h1>" . htmlspecialchars($titulo) . "</h1>";
         echo "<p>" . nl2br(htmlspecialchars($contenido)) . "</p>";
         echo "</div>";
 
-        // Mostrar la imagen si existe
+        // Mostrar la imagen solo si existe
         if ($imagen) {
             echo "<div class='review-image'>";
-            echo "<img src='" . htmlspecialchars($imagen) . "' alt='" . htmlspecialchars($titulo) . "' style='width:300px; height:auto;'>";
+            echo "<img src='images/" . htmlspecialchars($imagen) . "' alt='" . htmlspecialchars($titulo) . "' style='width:300px; height:auto;'>";
             echo "</div>";
         }
 
@@ -61,11 +61,11 @@ if (sqlsrv_has_rows($stmt)) {
     echo "<p>No hay reseñas disponibles.</p>";
 }
 
-// Cerrar el recurso de la consulta
+// Liberar el recurso de la consulta
 sqlsrv_free_stmt($stmt);
 ?>
     </section>
- 
+
     <footer>
         <p>&copy; 2024 Reseñas de Videojuegos</p>
     </footer>

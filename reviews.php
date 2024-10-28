@@ -25,16 +25,16 @@
 
 include 'conexion.php';  
 
-// Preparar la consulta
+
 $query = "SELECT title, review_text, imagen FROM dbo.reviews";
 $stmt = sqlsrv_query($conexion, $query);
 
 if ($stmt === false) {
-    // Si hay un error, mostrar el mensaje correspondiente
+    
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Recorrer los resultados de la consulta
+
 if (sqlsrv_has_rows($stmt)) {
     while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         $titulo = $row['title'];
@@ -48,9 +48,9 @@ if (sqlsrv_has_rows($stmt)) {
         echo "<p>" . nl2br(htmlspecialchars($contenido)) . "</p>";
         echo "</div>";
 
-        // Mostrar la imagen si existe
+        
         if ($imagen) {
-            // Ruta completa para las imágenes almacenadas en Azure
+            
             $ruta_imagen = "https://iranomas-b7grghffdfbxd0ap.scm.canadacentral-01.azurewebsites.net/wwwroot/images/" . htmlspecialchars($imagen);
             echo "<div class='review-image'>";
             echo "<img src='" . $ruta_imagen . "' alt='" . htmlspecialchars($titulo) . "' style='width:300px; height:auto;'>";
@@ -63,7 +63,7 @@ if (sqlsrv_has_rows($stmt)) {
     echo "<p>No hay reseñas disponibles.</p>";
 }
 
-// Cerrar el recurso de la consulta
+
 sqlsrv_free_stmt($stmt);
 ?>
     </section>

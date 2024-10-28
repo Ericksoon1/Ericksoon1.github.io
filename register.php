@@ -31,7 +31,7 @@
 </html>
 
 <?php
-// Configuración del servidor de SQL Server
+
 $serverName = "servidoriranomas.database.windows.net";
 $connectionOptions = [
     "Database" => "videojuegos_db",
@@ -39,29 +39,29 @@ $connectionOptions = [
     "PWD" => "junioRyzen3200$"
 ];
 
-// Conectar a SQL Server usando sqlsrv
+
 $conn = sqlsrv_connect($serverName, $connectionOptions);
 
-// Verificar conexión
+
 if ($conn === false) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Si se recibe un POST, procesar el registro
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Preparar la consulta para insertar en la tabla dbo.users
+    
     $query = "INSERT INTO dbo.users (username, email, password) VALUES (?, ?, ?)";
     $params = [$username, $email, $password];
 
-    // Ejecutar la consulta
+    
     $stmt = sqlsrv_query($conn, $query, $params);
 
     if ($stmt) {
-        // Redirigir al login después de un registro exitoso
+        
         header('Location: login.php');
         exit();
     } else {
@@ -69,6 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Cerrar la conexión
+
 sqlsrv_close($conn);
 ?>
